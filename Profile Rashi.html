@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rashi Chandel — Data Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E14;
+    --bg-raised:#11151F;
+    --bg-card:#151A26;
+    --line:#222838;
+    --text:#E8EAED;
+    --text-dim:#9099A8;
+    --text-faint:#5C6577;
+    --accent:#3FD0FF;
+    --accent-dim:#1B5C70;
+    --accent-glow:rgba(63,208,255,0.12);
+    --mono:'JetBrains Mono',monospace;
+    --sans:'Inter',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;}
+  section{padding:88px 0;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--accent);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:6px;height:6px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 8px var(--accent);
+  }
+  h1,h2,h3{font-family:var(--sans);font-weight:700;letter-spacing:-0.01em;}
+  .num{font-family:var(--mono);}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;
+    z-index:100;
+    background:rgba(11,14,20,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:72px;
+  }
+  .logo{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--text);}
+  .logo span{color:var(--accent);}
+  .navlinks{display:flex;gap:32px;font-size:14px;color:var(--text-dim);}
+  .navlinks a{margin-left:32px;}
+  .navlinks a:first-child{margin-left:0;}
+  .navlinks a:hover{color:var(--accent);}
+  @media (max-width:640px){.navlinks{display:none;}}
+
+  /* HERO */
+  .hero{
+    padding-top:140px;
+    padding-bottom:80px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero h1{
+    font-size:clamp(36px,6vw,64px);
+    line-height:1.08;
+    margin-bottom:20px;
+    max-width:680px;
+  }
+  .hero h1 .hl{color:var(--accent);}
+  .hero p.lead{
+    font-size:18px;
+    color:var(--text-dim);
+    max-width:520px;
+    margin-bottom:32px;
+  }
+  .hero-grid{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:40px;
+    margin-bottom:56px;
+  }
+  .hero-text{flex:1;min-width:0;}
+  .hero-photo{
+    position:relative;
+    width:160px;
+    height:160px;
+    flex-shrink:0;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--bg-card);
+  }
+  .hero-photo img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:none;
+  }
+  .hero-photo.photo-loaded img{display:block;}
+  .hero-photo.photo-loaded .photo-fallback-content{display:none;}
+  .photo-fallback-content{
+    display:flex;
+    width:100%;height:100%;
+    align-items:center;justify-content:center;
+    font-family:var(--mono);
+    font-size:48px;
+    font-weight:700;
+    color:var(--accent);
+    background:linear-gradient(135deg,var(--bg-card),var(--bg-raised));
+  }
+  @media (max-width:760px){
+    .hero-grid{flex-direction:column-reverse;}
+    .hero-photo{width:120px;height:120px;}
+  }
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);
+    font-size:14px;
+    padding:14px 24px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    transition:all 0.2s ease;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--accent);color:#06121A;border-color:var(--accent);font-weight:700;}
+  .btn-primary:hover{box-shadow:0 0 24px var(--accent-glow);transform:translateY(-1px);}
+  .btn-ghost{color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* PIPELINE VISUAL */
+  .pipeline{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:32px 32px 24px;
+  }
+  .pipeline-label{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .pipeline-track{
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .pipeline-line{
+    position:absolute;
+    top:50%;left:0;right:0;
+    height:1px;
+    background:var(--line);
+    z-index:0;
+  }
+  .stage{
+    position:relative;
+    z-index:1;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 12px;
+    text-align:center;
+    flex:1;
+    margin:0 4px;
+  }
+  .stage .stage-name{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .stage .stage-tech{
+    font-size:11px;
+    color:var(--text-faint);
+  }
+  .packet{
+    position:absolute;
+    top:50%;
+    width:8px;height:8px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 10px var(--accent);
+    transform:translateY(-50%);
+    animation:flow 4s linear infinite;
+  }
+  @keyframes flow{
+    0%{left:0%;opacity:0;}
+    5%{opacity:1;}
+    95%{opacity:1;}
+    100%{left:100%;opacity:0;}
+  }
+  @media (max-width:640px){
+    .pipeline-track{flex-direction:column;gap:12px;}
+    .pipeline-line{display:none;}
+    .stage{margin:0;width:100%;}
+    .packet{display:none;}
+  }
+
+  /* SECTION HEADERS */
+  .sec-head{margin-bottom:56px;}
+  .sec-head h2{font-size:clamp(28px,4vw,38px);}
+
+  /* STATS */
+  .stats-grid{
+    display:flex;
+    flex-wrap:wrap;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .stat{
+    background:var(--bg-raised);
+    padding:32px 20px;
+    flex:1 1 20%;
+    min-width:140px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .stat-num{font-family:var(--mono);font-size:30px;color:var(--accent);font-weight:700;}
+  .stat .stat-label{font-size:13px;color:var(--text-dim);margin-top:6px;}
+
+  /* EXPERIENCE */
+  .role{
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:32px;
+    padding:32px 0;
+    border-top:1px solid var(--line);
+  }
+  .role:first-of-type{border-top:none;}
+  .role-meta{font-family:var(--mono);font-size:13px;color:var(--text-faint);}
+  .role-meta .role-dates{color:var(--accent);display:block;margin-bottom:6px;}
+  .role h3{font-size:20px;margin-bottom:4px;}
+  .role .role-org{color:var(--text-dim);font-size:15px;margin-bottom:16px;}
+  .role ul{list-style:none;}
+  .role li{
+    position:relative;
+    padding-left:20px;
+    margin-bottom:10px;
+    color:var(--text-dim);
+    font-size:15px;
+  }
+  .role li::before{
+    content:'›';
+    position:absolute;left:0;
+    color:var(--accent);
+    font-family:var(--mono);
+  }
+  @media (max-width:700px){.role{grid-template-columns:1fr;gap:8px;}}
+
+  /* SKILLS */
+  .skill-groups{display:flex;flex-wrap:wrap;gap:24px;}
+  .skill-group{flex:1 1 280px;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:24px;}
+  .skill-group h4{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:14px;letter-spacing:0.04em;}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-family:var(--mono);
+    font-size:12px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    padding:6px 10px;
+    border-radius:4px;
+  }
+
+  /* BUSINESS INTELLIGENCE */
+  .bi-layout{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    align-items:flex-start;
+  }
+  .bi-mock{flex:1 1 420px;}
+  .bi-points{flex:1 1 280px;display:flex;flex-direction:column;gap:28px;}
+  .bi-mock{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .bi-mock-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 16px;
+    background:var(--bg-raised);
+    border-bottom:1px solid var(--line);
+  }
+  .bi-dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+  .bi-mock-title{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-left:8px;
+  }
+  .bi-mock-body{padding:24px;}
+  .bi-mock-kpis{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:24px;
+  }
+  .bi-kpi{
+    flex:1 1 120px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px;
+  }
+  .bi-kpi-label{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--text-faint);
+    letter-spacing:0.04em;
+    margin-bottom:6px;
+  }
+  .bi-kpi-val{
+    font-family:var(--mono);
+    font-size:20px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .bi-mock-chart{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px;
+    margin-bottom:20px;
+  }
+  .bi-mock-rows{display:flex;flex-direction:column;gap:10px;}
+  .bi-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--text-dim);
+    padding:10px 12px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+  }
+  .bi-row-val{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:12px;
+  }
+
+  .bi-point h4{font-size:17px;margin-bottom:8px;}
+  .bi-point p{color:var(--text-dim);font-size:14px;line-height:1.6;}
+
+  /* DASHBOARDS */
+  .dash-grid{display:flex;flex-wrap:wrap;gap:24px;}
+  .dash-card{
+    flex:1 1 320px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:20px;
+  }
+  .dash-card-head{margin-bottom:14px;}
+  .dash-tag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--accent);
+    background:rgba(63,208,255,0.1);
+    padding:3px 8px;
+    border-radius:4px;
+    display:inline-block;
+    margin-bottom:8px;
+  }
+  .dash-card h4{font-size:15px;margin:0;}
+  .dash-card svg{display:block;border-radius:6px;}
+  .dash-card p{color:var(--text-dim);font-size:13px;margin-top:14px;line-height:1.5;}
+
+  /* PUBLICATIONS */
+  .pub{
+    display:flex;
+    gap:20px;
+    padding:24px 0;
+    border-top:1px solid var(--line);
+    align-items:flex-start;
+  }
+  .pub:first-of-type{border-top:none;}
+  .pub-icon{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:13px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    flex-shrink:0;
+  }
+  .pub h4{font-size:17px;margin-bottom:6px;}
+  .pub p{color:var(--text-dim);font-size:14px;margin-bottom:8px;}
+  .pub a{color:var(--accent);font-family:var(--mono);font-size:13px;}
+  .pub a:hover{text-decoration:underline;}
+
+  /* PROJECTS */
+  .projects-grid{display:flex;flex-wrap:wrap;gap:24px;}
+  .project-card{
+    flex:1 1 320px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px;
+    transition:border-color 0.2s ease;
+  }
+  .project-card:hover{border-color:var(--accent-dim);}
+  .project-card h4{font-size:18px;margin-bottom:10px;}
+  .project-card p{color:var(--text-dim);font-size:14px;margin-bottom:16px;}
+
+
+  /* CONTACT */
+  .contact-section{text-align:center;}
+  .contact-section h2{font-size:clamp(32px,5vw,48px);margin-bottom:20px;}
+  .contact-section p{color:var(--text-dim);max-width:480px;margin:0 auto 40px;}
+  .contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:40px 0;
+    text-align:center;
+    color:var(--text-faint);
+    font-family:var(--mono);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">rashi<span>.</span>chandel</div>
+    <div class="navlinks">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#bi">BI</a>
+      <a href="#dashboards">Dashboards</a>
+      <a href="#publications">Publications</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="eyebrow">Data Engineer · United Kingdom</div>
+        <h1>I build the pipelines that turn <span class="hl">raw signal</span> into decisions.</h1>
+        <p class="lead">6+ years designing cloud data architectures and stakeholder facing BI across healthcare, HR, finance and academia. Azure, Snowflake, dbt, and the dashboards that turn pipelines into decisions.</p>
+        <div class="hero-cta">
+          <a href="#experience" class="btn btn-primary">View experience</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="profile.jpg" alt="Rashi Chandel" onload="this.parentElement.classList.add('photo-loaded')" onerror="this.style.display='none'">
+        <div class="photo-fallback-content">
+          <span>RC</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-label">
+        <span>LIVE PIPELINE · DAILY THROUGHPUT</span>
+        <span>1,000,000+ RECORDS</span>
+      </div>
+      <div class="pipeline-track">
+        <div class="pipeline-line"></div>
+        <div class="packet" style="animation-delay:0s;"></div>
+        <div class="packet" style="animation-delay:1.3s;"></div>
+        <div class="packet" style="animation-delay:2.6s;"></div>
+        <div class="stage">
+          <div class="stage-name">INGEST</div>
+          <div class="stage-tech">ADF · Airflow</div>
+        </div>
+        <div class="stage">
+          <div class="stage-name">TRANSFORM</div>
+          <div class="stage-tech">dbt · Spark</div>
+        </div>
+        <div class="stage">
+          <div class="stage-name">MODEL</div>
+          <div class="stage-tech">ARIMA · LSTM</div>
+        </div>
+        <div class="stage">
+          <div class="stage-name">SERVE</div>
+          <div class="stage-tech">Power BI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">years experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1M+</div>
+        <div class="stat-label">records daily</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30%</div>
+        <div class="stat-label">reliability gain</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">25%</div>
+        <div class="stat-label">downtime reduced</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">dashboards built</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Track record</div>
+      <h2>Experience</h2>
+    </div>
+
+    <div class="role">
+      <div class="role-meta">
+        <span class="role-dates">SEP 2024 — PRESENT</span>
+        Colchester, UK
+      </div>
+      <div>
+        <h3>Data Engineer, Immigration &amp; Applied Data Analyst</h3>
+        <div class="role-org">Aria Care</div>
+        <ul>
+          <li>Designed scalable Azure data architecture, orchestrating ingestion via Data Factory and Airflow</li>
+          <li>Built end to end ELT pipelines integrating Workday, SAP SuccessFactors and Oracle HCM into Snowflake, processing 1M+ records daily</li>
+          <li>Developed dbt transformation layers and star schema models for analytics ready reporting</li>
+          <li>Implemented validation frameworks improving data reliability by over 30%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="role-meta">
+        <span class="role-dates">OCT 2023 — SEP 2024</span>
+        Essex, UK
+      </div>
+      <div>
+        <h3>Research Assistant, Applied AI &amp; Data Systems</h3>
+        <div class="role-org">University of Essex</div>
+        <ul>
+          <li>Designed data ingestion and transformation pipelines for ML experimentation</li>
+          <li>Integrated multi source datasets into structured, analytics ready warehouse layers</li>
+          <li>Improved data consistency through schema standardisation and documentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="role-meta">
+        <span class="role-dates">JUN 2022 — SEP 2023</span>
+        United Kingdom
+      </div>
+      <div>
+        <h3>Machine Learning &amp; Data Engineer</h3>
+        <div class="role-org">Amber</div>
+        <ul>
+          <li>Migrated on premises pipelines to a Snowflake based cloud data warehouse</li>
+          <li>Designed batch and streaming pipelines using AWS and Airflow</li>
+          <li>Built monitoring and alerting systems, reducing downtime by 25%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role">
+      <div class="role-meta">
+        <span class="role-dates">2021 — 2022</span>
+        India
+      </div>
+      <div>
+        <h3>IT Business Analyst</h3>
+        <div class="role-org">Pathfinder &amp; Business Associates</div>
+        <ul>
+          <li>Developed Power BI and Tableau dashboards for finance and operational reporting, adopted into daily stakeholder workflows</li>
+          <li>Translated business requirements into data and reporting solutions used by leadership for monthly decisions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Stack</div>
+      <h2>Skills &amp; tools</h2>
+    </div>
+    <div class="skill-groups">
+      <div class="skill-group">
+        <h4>DATA ENGINEERING</h4>
+        <div class="pill-row">
+          <span class="pill">SQL</span>
+          <span class="pill">Python</span>
+          <span class="pill">ETL / ELT</span>
+          <span class="pill">Star Schema</span>
+          <span class="pill">Data Governance</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>PLATFORMS</h4>
+        <div class="pill-row">
+          <span class="pill">Snowflake</span>
+          <span class="pill">dbt</span>
+          <span class="pill">Azure Data Factory</span>
+          <span class="pill">Databricks</span>
+          <span class="pill">Airflow</span>
+          <span class="pill">Power BI</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h4>CLOUD &amp; ML</h4>
+        <div class="pill-row">
+          <span class="pill">Azure</span>
+          <span class="pill">AWS</span>
+          <span class="pill">ARIMA</span>
+          <span class="pill">LSTM</span>
+          <span class="pill">TensorFlow</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bi">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Stakeholder facing</div>
+      <h2>Business intelligence</h2>
+    </div>
+    <p style="color:var(--text-dim);max-width:640px;margin-bottom:48px;font-size:16px;">
+      A pipeline only matters once someone can act on it. Across finance, HR and healthcare, I've built 40+ Power BI and Tableau dashboards that operational and executive stakeholders actually open every day, not ones that get built once and forgotten.
+    </p>
+
+    <div class="bi-layout">
+      <div class="bi-mock">
+        <div class="bi-mock-bar">
+          <span class="bi-dot" style="background:#FF5F57;"></span>
+          <span class="bi-dot" style="background:#FEBC2E;"></span>
+          <span class="bi-dot" style="background:#28C840;"></span>
+          <span class="bi-mock-title">Operational Reporting · Live</span>
+        </div>
+        <div class="bi-mock-body">
+          <div class="bi-mock-kpis">
+            <div class="bi-kpi">
+              <div class="bi-kpi-label">RECORDS PROCESSED</div>
+              <div class="bi-kpi-val">1.04M</div>
+            </div>
+            <div class="bi-kpi">
+              <div class="bi-kpi-label">DATA RELIABILITY</div>
+              <div class="bi-kpi-val">98.6%</div>
+            </div>
+            <div class="bi-kpi">
+              <div class="bi-kpi-label">SLA BREACHES</div>
+              <div class="bi-kpi-val" style="color:#5DCAA5;">0</div>
+            </div>
+          </div>
+          <div class="bi-mock-chart">
+            <svg viewBox="0 0 400 120" width="100%" height="120" preserveAspectRatio="none">
+              <polyline points="0,90 40,70 80,75 120,50 160,55 200,30 240,40 280,20 320,28 360,12 400,18"
+                fill="none" stroke="#3FD0FF" stroke-width="2"/>
+              <polyline points="0,90 40,70 80,75 120,50 160,55 200,30 240,40 280,20 320,28 360,12 400,18 400,120 0,120"
+                fill="rgba(63,208,255,0.08)" stroke="none"/>
+            </svg>
+          </div>
+          <div class="bi-mock-rows">
+            <div class="bi-row"><span>Workforce attrition risk</span><span class="bi-row-val">Low</span></div>
+            <div class="bi-row"><span>Reconciliation checks</span><span class="bi-row-val">Passing</span></div>
+            <div class="bi-row"><span>Pipeline latency</span><span class="bi-row-val">42ms avg</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bi-points">
+        <div class="bi-point">
+          <h4>Executive level clarity</h4>
+          <p>Designed reporting suites for finance and operations leadership at Pathfinder &amp; Business Associates, translating raw transactional data into decisions stakeholders could act on same day.</p>
+        </div>
+        <div class="bi-point">
+          <h4>Governed and trustworthy</h4>
+          <p>Every dashboard sits on a properly modelled star schema with GDPR aligned governance, so the numbers stakeholders see are audit ready, not just attractive.</p>
+        </div>
+        <div class="bi-point">
+          <h4>Built for daily use</h4>
+          <p>Adoption matters more than aesthetics. Dashboards built at Aria Care and Minerva Group are used in daily standups and monthly board reporting alike.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dashboards">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Selected dashboards</div>
+      <h2>Reporting in practice</h2>
+    </div>
+    <p style="color:var(--text-dim);max-width:640px;margin-bottom:48px;font-size:16px;">
+      A sample of Power BI work built for real operational teams. Client and dataset details have been anonymised, but the structure, KPIs and drill down logic reflect dashboards actually in production.
+    </p>
+
+    <div class="dash-grid">
+
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span class="dash-tag">Executive</span>
+          <h4>Contact centre performance overview</h4>
+        </div>
+        <svg viewBox="0 0 460 280" width="100%" role="img" aria-label="Mock executive dashboard showing total volume, abandon rate, SLA percentage and a daily trend chart">
+          <rect x="0" y="0" width="460" height="280" rx="8" fill="#11151F"/>
+          <rect x="12" y="12" width="120" height="44" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="30" fill="#9099A8" font-size="9" font-family="monospace">TOTAL VOLUME</text>
+          <text x="22" y="46" fill="#E8EAED" font-size="16" font-weight="700" font-family="monospace">78K</text>
+
+          <rect x="140" y="12" width="100" height="44" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="150" y="30" fill="#9099A8" font-size="9" font-family="monospace">ABANDON %</text>
+          <text x="150" y="46" fill="#3FD0FF" font-size="16" font-weight="700" font-family="monospace">35.3%</text>
+
+          <rect x="248" y="12" width="100" height="44" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="258" y="30" fill="#9099A8" font-size="9" font-family="monospace">SLA %</text>
+          <text x="258" y="46" fill="#5DCAA5" font-size="16" font-weight="700" font-family="monospace">8.4%</text>
+
+          <rect x="356" y="12" width="92" height="44" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="366" y="30" fill="#9099A8" font-size="9" font-family="monospace">AVG WAIT</text>
+          <text x="366" y="46" fill="#EF9F27" font-size="16" font-weight="700" font-family="monospace">15.9m</text>
+
+          <rect x="12" y="68" width="436" height="130" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="86" fill="#E8EAED" font-size="11" font-weight="700">Daily abandonment trend</text>
+          <polyline points="22,170 50,140 78,155 106,120 134,145 162,110 190,130 218,95 246,135 274,105 302,150 330,125 358,160 386,140 414,165 438,150"
+            fill="none" stroke="#3FD0FF" stroke-width="2"/>
+          <polyline points="22,170 50,140 78,155 106,120 134,145 162,110 190,130 218,95 246,135 274,105 302,150 330,125 358,160 386,140 414,165 438,150 438,190 22,190"
+            fill="rgba(63,208,255,0.08)" stroke="none"/>
+
+          <rect x="12" y="208" width="212" height="60" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="224" fill="#E8EAED" font-size="10" font-weight="700">By queue</text>
+          <rect x="22" y="232" width="120" height="6" rx="2" fill="#3FD0FF"/>
+          <rect x="22" y="244" width="90" height="6" rx="2" fill="#3FD0FF"/>
+          <rect x="22" y="256" width="60" height="6" rx="2" fill="#3FD0FF"/>
+
+          <rect x="236" y="208" width="212" height="60" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="246" y="224" fill="#E8EAED" font-size="10" font-weight="700">By hour of day</text>
+          <rect x="246" y="240" width="14" height="20" fill="#FAC775"/>
+          <rect x="266" y="232" width="14" height="28" fill="#FAC775"/>
+          <rect x="286" y="236" width="14" height="24" fill="#FAC775"/>
+          <rect x="306" y="228" width="14" height="32" fill="#FAC775"/>
+          <rect x="326" y="234" width="14" height="26" fill="#FAC775"/>
+          <rect x="346" y="238" width="14" height="22" fill="#FAC775"/>
+          <rect x="366" y="230" width="14" height="30" fill="#FAC775"/>
+          <rect x="386" y="236" width="14" height="24" fill="#FAC775"/>
+          <rect x="406" y="240" width="14" height="20" fill="#FAC775"/>
+          <rect x="426" y="244" width="14" height="16" fill="#FAC775"/>
+        </svg>
+        <p>KPI tiles, accepted call gauge and queue level breakdowns for senior stakeholders, refreshed daily from automated pipelines.</p>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span class="dash-tag">Operational</span>
+          <h4>Weekly performance scorecard</h4>
+        </div>
+        <svg viewBox="0 0 460 280" width="100%" role="img" aria-label="Mock operational dashboard showing a weekly scorecard table and handle time chart">
+          <rect x="0" y="0" width="460" height="280" rx="8" fill="#11151F"/>
+          <rect x="12" y="12" width="436" height="150" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="30" fill="#E8EAED" font-size="11" font-weight="700">Weekly scorecard</text>
+          <text x="22" y="50" fill="#9099A8" font-size="9" font-family="monospace">WEEK</text>
+          <text x="180" y="50" fill="#9099A8" font-size="9" font-family="monospace">ABANDON</text>
+          <text x="270" y="50" fill="#9099A8" font-size="9" font-family="monospace">SLA</text>
+          <text x="330" y="50" fill="#9099A8" font-size="9" font-family="monospace">CALLS</text>
+          <line x1="22" y1="58" x2="438" y2="58" stroke="#222838"/>
+
+          <circle cx="30" cy="72" r="5" fill="#5DCAA5"/>
+          <text x="44" y="76" fill="#E8EAED" font-size="10" font-family="monospace">W44</text>
+          <text x="180" y="76" fill="#E8EAED" font-size="10" font-family="monospace">26.3%</text>
+          <text x="270" y="76" fill="#E8EAED" font-size="10" font-family="monospace">12.4%</text>
+          <text x="330" y="76" fill="#E8EAED" font-size="10" font-family="monospace">7,320</text>
+
+          <circle cx="30" cy="92" r="5" fill="#E24B4A"/>
+          <text x="44" y="96" fill="#E8EAED" font-size="10" font-family="monospace">W43</text>
+          <text x="180" y="96" fill="#E8EAED" font-size="10" font-family="monospace">33.1%</text>
+          <text x="270" y="96" fill="#E8EAED" font-size="10" font-family="monospace">8.7%</text>
+          <text x="330" y="96" fill="#E8EAED" font-size="10" font-family="monospace">7,904</text>
+
+          <circle cx="30" cy="112" r="5" fill="#EF9F27"/>
+          <text x="44" y="116" fill="#E8EAED" font-size="10" font-family="monospace">W42</text>
+          <text x="180" y="116" fill="#E8EAED" font-size="10" font-family="monospace">31.9%</text>
+          <text x="270" y="116" fill="#E8EAED" font-size="10" font-family="monospace">8.7%</text>
+          <text x="330" y="116" fill="#E8EAED" font-size="10" font-family="monospace">8,145</text>
+
+          <circle cx="30" cy="132" r="5" fill="#E24B4A"/>
+          <text x="44" y="136" fill="#E8EAED" font-size="10" font-family="monospace">W41</text>
+          <text x="180" y="136" fill="#E8EAED" font-size="10" font-family="monospace">37.0%</text>
+          <text x="270" y="136" fill="#E8EAED" font-size="10" font-family="monospace">7.6%</text>
+          <text x="330" y="136" fill="#E8EAED" font-size="10" font-family="monospace">8,747</text>
+
+          <line x1="22" y1="146" x2="438" y2="146" stroke="#222838"/>
+          <text x="44" y="158" fill="#3FD0FF" font-size="10" font-weight="700" font-family="monospace">TOTAL</text>
+          <text x="180" y="158" fill="#3FD0FF" font-size="10" font-weight="700" font-family="monospace">35.3%</text>
+
+          <rect x="12" y="172" width="212" height="96" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="190" fill="#E8EAED" font-size="10" font-weight="700">Handle time by queue</text>
+          <rect x="22" y="230" width="16" height="30" fill="#5DCAA5"/>
+          <rect x="22" y="210" width="16" height="20" fill="#1B5C70"/>
+          <rect x="46" y="222" width="16" height="38" fill="#5DCAA5"/>
+          <rect x="46" y="206" width="16" height="16" fill="#1B5C70"/>
+          <rect x="70" y="218" width="16" height="42" fill="#5DCAA5"/>
+          <rect x="70" y="202" width="16" height="16" fill="#1B5C70"/>
+          <rect x="94" y="228" width="16" height="32" fill="#5DCAA5"/>
+          <rect x="94" y="214" width="16" height="14" fill="#1B5C70"/>
+          <rect x="118" y="224" width="16" height="36" fill="#5DCAA5"/>
+          <rect x="118" y="210" width="16" height="14" fill="#1B5C70"/>
+          <rect x="142" y="230" width="16" height="30" fill="#5DCAA5"/>
+          <rect x="142" y="216" width="16" height="14" fill="#1B5C70"/>
+          <rect x="166" y="220" width="16" height="40" fill="#5DCAA5"/>
+          <rect x="166" y="206" width="16" height="14" fill="#1B5C70"/>
+          <rect x="190" y="226" width="16" height="34" fill="#5DCAA5"/>
+          <rect x="190" y="212" width="16" height="14" fill="#1B5C70"/>
+
+          <rect x="236" y="172" width="212" height="96" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="246" y="190" fill="#E8EAED" font-size="10" font-weight="700">Monthly volume</text>
+          <text x="246" y="210" fill="#9099A8" font-size="9">Month A</text>
+          <rect x="246" y="216" width="160" height="14" fill="#5DCAA5"/>
+          <text x="246" y="240" fill="#9099A8" font-size="9">Month B</text>
+          <rect x="246" y="246" width="128" height="14" fill="#5DCAA5"/>
+        </svg>
+        <p>Drill down scorecards for team leads, surfacing risk flags and week on week volume shifts at queue level.</p>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-head">
+          <span class="dash-tag">Case management</span>
+          <h4>HR case tracking and SLA monitor</h4>
+        </div>
+        <svg viewBox="0 0 460 280" width="100%" role="img" aria-label="Mock HR case management dashboard showing open case counts, a donut chart and case category breakdown">
+          <rect x="0" y="0" width="460" height="280" rx="8" fill="#11151F"/>
+          <rect x="12" y="12" width="104" height="50" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="20" y="30" fill="#9099A8" font-size="9" font-family="monospace">OPEN CASES</text>
+          <text x="20" y="48" fill="#E8EAED" font-size="18" font-weight="700" font-family="monospace">427</text>
+
+          <rect x="124" y="12" width="104" height="50" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="132" y="30" fill="#9099A8" font-size="9" font-family="monospace">AVG OPEN DAYS</text>
+          <text x="132" y="48" fill="#3FD0FF" font-size="18" font-weight="700" font-family="monospace">36.3</text>
+
+          <rect x="236" y="12" width="104" height="50" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="244" y="30" fill="#9099A8" font-size="9" font-family="monospace">LONG TERM</text>
+          <text x="244" y="48" fill="#EF9F27" font-size="18" font-weight="700" font-family="monospace">13</text>
+
+          <rect x="348" y="12" width="100" height="50" rx="6" fill="#151A26" stroke="#222838"/>
+          <text x="356" y="30" fill="#9099A8" font-size="9" font-family="monospace">CLOSED</text>
+          <text x="356" y="48" fill="#5DCAA5" font-size="18" font-weight="700" font-family="monospace">312</text>
+
+          <rect x="12" y="76" width="212" height="120" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="94" fill="#E8EAED" font-size="10" font-weight="700">Timeline of open cases</text>
+          <circle cx="118" cy="150" r="42" fill="none" stroke="#222838" stroke-width="16"/>
+          <circle cx="118" cy="150" r="42" fill="none" stroke="#5DCAA5" stroke-width="16" stroke-dasharray="132 264" transform="rotate(-90 118 150)"/>
+          <circle cx="118" cy="150" r="42" fill="none" stroke="#FAC775" stroke-width="16" stroke-dasharray="103 264" stroke-dashoffset="-132" transform="rotate(-90 118 150)"/>
+          <circle cx="118" cy="150" r="42" fill="none" stroke="#E24B4A" stroke-width="16" stroke-dasharray="18 264" stroke-dashoffset="-235" transform="rotate(-90 118 150)"/>
+
+          <rect x="236" y="76" width="212" height="120" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="246" y="94" fill="#E8EAED" font-size="10" font-weight="700">Case type breakdown</text>
+          <rect x="246" y="104" width="150" height="10" fill="#5DCAA5"/>
+          <rect x="246" y="120" width="90" height="10" fill="#5DCAA5"/>
+          <rect x="246" y="136" width="70" height="10" fill="#5DCAA5"/>
+          <rect x="246" y="152" width="55" height="10" fill="#5DCAA5"/>
+          <rect x="246" y="168" width="40" height="10" fill="#5DCAA5"/>
+
+          <rect x="12" y="204" width="436" height="64" rx="8" fill="#151A26" stroke="#222838"/>
+          <text x="22" y="222" fill="#E8EAED" font-size="10" font-weight="700">Open cases by site</text>
+          <rect x="22" y="232" width="16" height="26" fill="#3FD0FF"/>
+          <rect x="44" y="236" width="16" height="22" fill="#3FD0FF"/>
+          <rect x="66" y="238" width="16" height="20" fill="#3FD0FF"/>
+          <rect x="88" y="240" width="16" height="18" fill="#3FD0FF"/>
+          <rect x="110" y="242" width="16" height="16" fill="#3FD0FF"/>
+          <rect x="132" y="244" width="16" height="14" fill="#3FD0FF"/>
+          <rect x="154" y="246" width="16" height="12" fill="#3FD0FF"/>
+          <rect x="176" y="246" width="16" height="12" fill="#3FD0FF"/>
+          <rect x="198" y="248" width="16" height="10" fill="#3FD0FF"/>
+          <rect x="220" y="248" width="16" height="10" fill="#3FD0FF"/>
+        </svg>
+        <p>Filterable by region, department and year, with case ageing and category drill downs for HR business partners.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Research &amp; writing</div>
+      <h2>Publications</h2>
+    </div>
+
+    <div class="pub">
+      <div class="pub-icon">BOOK</div>
+      <div>
+        <h4>Applied AI for Data Driven Decision Making</h4>
+        <p>A practical, system oriented look at how data, models and human judgment align to support effective decisions at scale.</p>
+        <a href="#">View on Amazon →</a>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-icon">MSc</div>
+      <div>
+        <h4>Applied Machine Learning for Stock Market Forecasting</h4>
+        <p>MSc dissertation, University of Essex. Hybrid ARIMA and Prophet framework achieving up to 94% forecast accuracy, with PCA and K means clustering for risk aware portfolio construction.</p>
+        <a href="#">University of Essex repository →</a>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-icon">ART</div>
+      <div>
+        <h4>Using Machine Learning to Predict Workforce Trends</h4>
+        <p>An applied data science approach to forecasting workforce attrition and trends using open source tooling.</p>
+        <a href="#">Read on Medium →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Selected work</div>
+      <h2>Projects</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h4>DeciSense AI</h4>
+        <p>Decision intelligence platform combining predictive ML, scenario simulation and explainable recommendations. Built with Python and Streamlit, outputs ranked decisions and reports.</p>
+        <div class="pill-row">
+          <span class="pill">Python</span>
+          <span class="pill">Streamlit</span>
+          <span class="pill">ML</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <h4>Financial Time Series Forecasting</h4>
+        <p>Comparative implementation of ARIMA and LSTM models across global equity markets, with volatility based clustering for portfolio diversification.</p>
+        <div class="pill-row">
+          <span class="pill">ARIMA</span>
+          <span class="pill">LSTM</span>
+          <span class="pill">PCA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <div class="eyebrow" style="justify-content:center;">Open to opportunities</div>
+    <h2>Let's build something reliable.</h2>
+    <p>Currently based in the UK, open to Skilled Worker sponsored roles and Knowledge Transfer Partnership opportunities in data engineering and applied AI.</p>
+    <div class="contact-links">
+      <a href="mailto:rashi02chandel@gmail.com" class="btn btn-primary">Email me</a>
+      <a href="https://www.linkedin.com/in/rashichandel/" class="btn btn-ghost">LinkedIn</a>
+      <a href="https://github.com/Chandelrashi" class="btn btn-ghost">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built by Rashi Chandel · Updated 2026
+</footer>
+
+</body>
+</html>
